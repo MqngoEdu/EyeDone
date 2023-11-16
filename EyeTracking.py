@@ -18,7 +18,7 @@ RIGHT_IRIS = [469,470,471,472]
 
 cap = cv.VideoCapture(0) # Video camera capture.
 with mp_face_mesh.FaceMesh(
-    max_num_faces=3,
+    max_num_faces=1,
     refine_landmarks=True,
     min_detection_confidence=0.5,
     min_tracking_confidence=0.5
@@ -32,7 +32,7 @@ with mp_face_mesh.FaceMesh(
         img_h, img_w = frame.shape[:2]
         results = face_mesh.process(rgb_frame)
         if results.multi_face_landmarks:
-            mesh_points = np.array([np.multiply([p.x, p.y], [img_w, img_h]).astype(int) for p in results.multi_face_landmarks[1].landmark])
+            mesh_points = np.array([np.multiply([p.x, p.y], [img_w, img_h]).astype(int) for p in results.multi_face_landmarks[0].landmark])
             (l_cx, l_cy), l_radius = cv.minEnclosingCircle(mesh_points[LEFT_IRIS])
             (r_cx, r_cy), r_radius = cv.minEnclosingCircle(mesh_points[RIGHT_IRIS])
             center_left = np.array([l_cx, l_cy], dtype=np.int32)
